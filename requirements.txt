@@ -1,0 +1,5 @@
+streamlit
+pandas
+numpy
+scikit-learn
+# any other libraries your app needs
