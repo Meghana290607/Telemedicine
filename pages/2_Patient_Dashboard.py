@@ -28,9 +28,20 @@ selected_doctor = st.selectbox("Choose Doctor", doctor_names)
 selected_department = st.selectbox("Choose Department", departments)
 
 # Select appointment date and time
+# Get current time as a time object (ensure it's a valid time object)
+current_time = datetime.now().time()
+
+# Input the time for the appointment
+appt_time = st.time_input("Select Time", min_value=current_time)
+
+# Select appointment date
 appt_date = st.date_input("Select Date", min_value=datetime.today().date())
-appt_time = st.time_input("Select Time", min_value=datetime.now().time())
+
+# Combine the date and time selected
 full_datetime = datetime.combine(appt_date, appt_time)
+
+st.write(f"Selected appointment date and time: {full_datetime}")
+
 
 # Validate appointment (no past dates and 15-minute gap)
 def validate_appointment_time(selected_datetime, doctor_name):
