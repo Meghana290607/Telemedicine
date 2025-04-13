@@ -1,7 +1,7 @@
 import streamlit as st
 from utils.session import init_session
-from utils.data_handler import load_appointments, save_appointment, load_users, save_user
-from datetime import datetime
+from utils.data_handler import load_appointments, save_appointment, load_users
+from datetime import datetime, timedelta
 
 # Initialize session state
 init_session()
@@ -39,11 +39,12 @@ def validate_appointment_time(selected_datetime, doctor_name):
         st.error("You cannot book an appointment in the past! Please choose a future time.")
         return False
 
-    # Check for time conflicts with existing appointments
+    # Check for time conflicts with existing appointments (15-minute gap)
     appts = load_appointments()
     doctor_appts = appts[appts['doctor'] == doctor_name]
     for _, app in doctor_appts.iterrows():
-        if abs((selected_datetime - app['appointment_time']).total_seconds()) < 900:  # 15 minutes
+        existing_appt_time = pd.to_datetime(app['datetime'])
+        if abs((selected_datetime - existing_appt_time).total_seconds()) < 900:  # 15 minutes
             st.error("This time slot is already booked. Please choose another time.")
             return False
 
@@ -61,4 +62,3 @@ st.markdown("### 📋 Your Appointments")
 appts = load_appointments()
 user_appts = appts[appts['patient'] == st.session_state.username]
 st.dataframe(user_appts)
-
