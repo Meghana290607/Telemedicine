@@ -1,5 +1,6 @@
 username,password,role
 alice,123,Patient
 bob,123,Doctor
+jack,123,Doctor
 admin,admin,Admin
 GANGOTHRI,143,Patient
